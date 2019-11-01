@@ -1,0 +1,9 @@
+{
+    "PAGE": "Seite ",
+    "REFRESH": "Aktualisieren",
+    "RESTART": "Neustart PM2",
+    "STOP": "Stop PM2",
+    "REBOOT": "Neustarten Pi",
+    "SHUTDOWN": "Herunterfahren Pi",
+    "MONITOR": "Monitor"
+}
