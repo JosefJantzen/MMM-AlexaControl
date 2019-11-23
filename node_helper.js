@@ -71,8 +71,7 @@ module.exports = NodeHelper.create({
 
     pageDevices: function(pageD){      //  creates your page devices
         _this = this;
-        pageHandler = [function(action) {_this.sendSocketNotification("PAGE_CHANGED", 0)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 1)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 2)},function(action) {_this.sendSocketNotification("PAGE_CHANGED",3 )},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 4)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 5)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 6)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 7)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 8)},function(action) {_this.sendSocketNotification("PAGE_CHANGED", 9)},]
-        
+                
         counter = 0 + Object.keys(pageD.devices).length
 
         if(_this.config.pages > 0){
@@ -86,7 +85,6 @@ module.exports = NodeHelper.create({
                 _this.config.startPort++
             }
         }
-        //_this.config.startPort = _this.config.startPort + (100 - _this.config.pages)
         return pageD
     },
 
