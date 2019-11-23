@@ -10,8 +10,8 @@ Module.register("MMM-AlexaControl",{
      
     defaults:{
         image: true,    //  shows the image
-        height: 120,    // heigth of the image
-        width: 120,     // width of the image
+        height: 265,    // heigth of the image
+        width: 265,     // width of the image
         pages: 0,       //  number off pages in MMM-Pages module. 0 means you doesn't use it
         devices: {      //  empty object for your custom devices
             devices: []
