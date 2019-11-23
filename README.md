@@ -1,4 +1,4 @@
-# MMM-AlexaControl
+# MMM-AlexaControl d
 
 The `MMM-AlexaControl` module allows you to control your [MagicMirror²](https://github.com/MichMich/MagicMirror) with Alexa.
 You can turn it on and off, change the page and send notifications to other modules. For that it uses [`node-fauxmo`](https://github.com/lspiehler/node-fauxmo) nodejs module. As a result of this only an Amazon Alexa is necessary to use the module. Not even an Alexa Skill is required.
