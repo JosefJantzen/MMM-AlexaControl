@@ -71,7 +71,7 @@ module.exports = NodeHelper.create({
 
     pageDevices: function(pageD){      //  creates your page devices
         _this = this;
-                
+
         counter = 0 + Object.keys(pageD.devices).length
 
         if(_this.config.pages > 0){
@@ -219,6 +219,18 @@ module.exports = NodeHelper.create({
         }
         _this.config.startPort++
         return menuD; 
+    },
+
+    monitorOff: function(){
+        if(this.config.vcgencmd){
+            exec("vcgencmd display_power 0", opts, (error, stdout, stderr) => {
+                _this.checkForExecError(error, stdout, stderr); 
+            });
+        }else{
+            exec("tvservice --off", opts, (error, stdout, stderr) => {
+                _this.checkForExecError(error, stdout, stderr);
+            });
+        }
     },
 
     checkForExecError: function(error, stdout, stderr) {
