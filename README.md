@@ -75,7 +75,7 @@ These are configured devices you can use. If you want to change their name you m
 
 ### Page devices
 
-If you are using the [MMM-Pages](https://github.com/edward-shen/MMM-pages) module you can change the page with this module. <br> You only have to type your number of pages in th config file. ***Note:*** At the time there are only ten pages available but I think that's enougth.
+If you are using the [MMM-Pages](https://github.com/edward-shen/MMM-pages) module you can change the page with this module. <br> You only have to type your number of pages in th config file. ***Note:*** There are  100 pages available. I think that's enougth.
 
 | Option            | Description
 | ----------------- | -----------

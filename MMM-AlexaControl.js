@@ -28,10 +28,6 @@ Module.register("MMM-AlexaControl",{
         vcgencmd: true      //  command you use for monitor toggle
     },
 
-    /*getStyles: function() {
-		return [this.file("MMM-AlexaControl.css")];
-	},*/
-
     getTranslations: function(){            // add more translations
         return {
             en: "translations/en.json",
