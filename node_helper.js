@@ -85,9 +85,9 @@ module.exports = NodeHelper.create({
                 pageD.devices[i + counter] = device
                 _this.config.startPort++
             }
-            _this.config.startPort = _this.config.startPort + (10 - _this.config.pages)
-            return pageD
         }
+        _this.config.startPort = _this.config.startPort + (10 - _this.config.pages)
+        return pageD
     },
 
     menuDevices: function(menuD){       //  create your devices to control the Mirror and pi

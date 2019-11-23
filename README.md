@@ -46,7 +46,7 @@ modules:[
         config:{
             image: true,
             pm2ProcessName: "mm",
-            vcgencmd: true,
+            vcgencmd: true
         }
     }
 ]
