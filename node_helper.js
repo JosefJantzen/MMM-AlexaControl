@@ -222,6 +222,7 @@ module.exports = NodeHelper.create({
     },
 
     monitorOff: function(){
+        var opts = { timeout: 8000 };
         if(this.config.vcgencmd){
             exec("vcgencmd display_power 0", opts, (error, stdout, stderr) => {
                 _this.checkForExecError(error, stdout, stderr); 
