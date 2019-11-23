@@ -80,7 +80,7 @@ module.exports = NodeHelper.create({
                 device = {}
                 device.name = _this.translations["page"] + (i + 1)
                 device.port = _this.config.startPort - 100
-                device.handler = new Function('action', `function(action) {_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)}`)
+                device.handler = new Function('action', `_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)`)
 
                 pageD.devices[i + counter] = device
                 _this.config.startPort++
