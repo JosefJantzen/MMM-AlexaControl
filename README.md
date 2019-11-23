@@ -1,5 +1,9 @@
 # MMM-AlexaControl
 
+This is the development branch. Please use the master branch.
+
+
+
 The `MMM-AlexaControl` module allows you to control your [MagicMirror²](https://github.com/MichMich/MagicMirror) with Alexa.
 You can turn it on and off, change the page and send notifications to other modules. For that it uses [`node-fauxmo`](https://github.com/lspiehler/node-fauxmo) nodejs module. As a result of this only an Amazon Alexa is necessary to use the module. Not even an Alexa Skill is required.
 It emulates an Wemos device. So acutally every smart home automation device that supports Wemos devices should be able to control your Mirror. But I only test it with an Echo Dot Gen. 3 and a Raspberry Pi 3B+. <br>
@@ -42,7 +46,7 @@ modules:[
         config:{
             image: true,
             pm2ProcessName: "mm",
-            vcgencmd: true,
+            vcgencmd: true
         }
     }
 ]
@@ -54,7 +58,9 @@ The following properties can be configured:
 
 | Option            | Description
 | ----------------- | -----------
-| `image`           | ![Icon](https://i.imgur.com/wk0YF1V.png?1) <br>  Make this image visible. You can change other properties in the `MMM-AlexaControl.css` file. <br> **Default Value:** `true` <br>**Possilbe Values:** `true` or `false`
+| `image`           | ![Icon](https://i.imgur.com/wk0YF1V.png?1) <br>  Make this image visible. <br> **Default Value:** `true` <br>**Possilbe Values:** `true` or `false`
+| `height`          | Here you can change the image height. <br> **Default Value:** `265` ***Note:*** The unit is px.
+| `wight`           | Here you can change the image width. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `pm2ProcessName`  | If you want to restart your Mirror with PM2 change here your PM2 processname. [Here](https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror) you can configure PM2 for your Mirror. <br> **Default value:** `mm`
 | `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `true` <br> **Possible values:**<br> `true` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`false` = `tvservice --off` and `tvservice --preferred`
 | `startPort`       | First Port for the devices. The port identify the device. So delete old devices in the Alexa App to prevent issues. Normaly you don't have to change it. <br> **Default value:** `11000`

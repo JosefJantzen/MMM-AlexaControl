@@ -9,7 +9,9 @@
 Module.register("MMM-AlexaControl",{
      
     defaults:{
-        image: true,    //  size etc. acn be configure in the css file only the source must be change here
+        image: true,    //  shows the image
+        height: 265,    // heigth of the image
+        width: 265,     // width of the image
         pages: 0,       //  number off pages in MMM-Pages module. 0 means you doesn't use it
         devices: {      //  empty object for your custom devices
             devices: []
@@ -26,9 +28,9 @@ Module.register("MMM-AlexaControl",{
         vcgencmd: true      //  command you use for monitor toggle
     },
 
-    getStyles: function() {
+    /*getStyles: function() {
 		return [this.file("MMM-AlexaControl.css")];
-	},
+	},*/
 
     getTranslations: function(){            // add more translations
         return {
@@ -50,6 +52,8 @@ Module.register("MMM-AlexaControl",{
             let img = document.createElement("img");
             img.classList = "img";
             img.src = "MMM-AlexaControl/AlexaLogoGrey.png";
+            img.height = this.config.height;
+            img.width = this.config.width;
             return img;
         }else{
             return document.createElement("div");
