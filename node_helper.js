@@ -79,14 +79,14 @@ module.exports = NodeHelper.create({
             for(i = 0; i < _this.config.pages; i++){
                 device = {}
                 device.name = _this.translations["page"] + (i + 1)
-                device.port = _this.config.startPort
-                device.handler = pageHandler[i]
+                device.port = _this.config.startPort - 100
+                device.handler = new Function('action', `function(action) {_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)}`)
 
                 pageD.devices[i + counter] = device
                 _this.config.startPort++
             }
         }
-        _this.config.startPort = _this.config.startPort + (10 - _this.config.pages)
+        //_this.config.startPort = _this.config.startPort + (100 - _this.config.pages)
         return pageD
     },
 
