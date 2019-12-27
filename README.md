@@ -84,7 +84,7 @@ If you are using the [MMM-Pages](https://github.com/edward-shen/MMM-pages) modul
 ### Notification devices
 
 Notification devices allows you to send notifications to other modules.<br>
-You can send the same notification when you turn the device on and off like this:
+You can send the same notification when you turn the device on and off like this: <br>***Note:*** You have to put the notifications array you chose inside the config part.
 
 ````js
 notifications: [
@@ -105,12 +105,12 @@ notifications: [
         name: 'Notification 2',
         port: 11101,
         OnOff: true,
-        notification: [["NOTIFICATION ON", "PAYLOAD"],["NOTIFICATION OFF", "PAYLOAD"]]
+        notification: [["NOTIFICATION ON", "PAYLOAD ON"],["NOTIFICATION OFF", "PAYLOAD OFF"]]
     }
 ]
 ````
-
-These are the configuration options for a notification device: <br> **Note:** They are all necessary.
+***Note:*** `NOTIFICATION ON` and `NOTIFICATION OFF` stay for the different notifications you can send when you turn on or off the device. The same thing applies to `PAYLOAD ON` and `PAYLOAD OFF`. <br> <br>
+These are the configuration options for a notification device: <br> ***Note:*** They are all necessary. 
 
 | Option            | Description
 | ----------------- | -----------
@@ -123,6 +123,7 @@ These are the configuration options for a notification device: <br> **Note:** Th
 
 You can also create custom devices. I'm not really sure if it's useful but probably somebody need it. For that you need the option `devices`. Here are two examples: <br>
 If you want to do the same thing when you turn on and off your devices use this:
+<br>***Note:*** You have to put the devices array you chose inside the config part.
 
 ````js
 devices: {
