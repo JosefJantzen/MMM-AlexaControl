@@ -26,7 +26,6 @@ module.exports = NodeHelper.create({
         nD = this.notificationDevices(cD, this.config.notifications);
         pD = this.pageDevices(nD);
         mD = this.menuDevices(pD);
-        //console.log(pD);
         //console.log(mD);
 
         fauxMoPages = new FauxMo(mD);       // creates fauxmo devices
@@ -73,22 +72,23 @@ module.exports = NodeHelper.create({
         _this = this;
 
         counter = 0 + Object.keys(pageD.devices).length
+        this.pPort = _this.config.startPort
 
         if(_this.config.pages > 0){
             for(i = 0; i < _this.config.pages; i++){
                 device = {}
                 device.name = _this.translations["page"] + (i + 1)
-                device.port = _this.config.startPort - 100
+                device.port = this.pPort - 100
                 device.handler = new Function('action', `_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)`)
 
                 pageD.devices[i + counter] = device
-                _this.config.startPort++
+                this.pPort++
             }
         }
         return pageD
     },
 
-    menuDevices: function(menuD){       //  create your devices to control the Mirror and pi
+    menuDevices: function(menuD){       //  create your devices to control the Mirror and Pi
         _this = this;
         var opts = { timeout: 8000 };
 
