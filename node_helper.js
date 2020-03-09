@@ -88,7 +88,7 @@ module.exports = NodeHelper.create({
         return pageD
     },
 
-    menuDevices: function(menuD){       //  create your devices to control the Mirror and pi
+    menuDevices: function(menuD){       //  create your devices to control the Mirror and Pi
         _this = this;
         var opts = { timeout: 8000 };
 
