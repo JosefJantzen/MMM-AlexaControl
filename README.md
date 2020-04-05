@@ -58,8 +58,9 @@ The following properties can be configured:
 | `height`          | Here you can change the image height. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `wight`           | Here you can change the image width. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `pm2ProcessName`  | If you want to restart your Mirror with PM2 change here your PM2 processname. [Here](https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror) you can configure PM2 for your Mirror. <br> **Default value:** `mm`
-| `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `true` <br> **Possible values:**<br> `true` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`false` = `tvservice --off` and `tvservice --preferred`
-| `startPort`       | First Port for the devices. The port identify the device. So delete old devices in the Alexa App to prevent issues. Normaly you don't have to change it. <br> **Default value:** `11000`
+| `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `vcgencmd` <br> **Possible values:**<br> `vcgencmd` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`tvservice` = `tvservice --off` and `tvservice --preferred` <br> `hide` = use module hiding on devices that do not supporot either of the other two chocies
+| `startPort`       | First Port for the devices. The port identify the device. So delete old devices in the Alexa App to prevent issues. Normaly you don't have to change it. <br> **Default value:** `11000`|
+| `deviceName` | this option allows you to provide a name for this MM installation, useful if u have more than one Mirror installation. the alexa device names will include this name <br> **Default value:** not used
 
 ### Control devices
 These are configured devices you can use. If you want to change their name you must edit the translation file inside `/translations/en.json`. You can also add languages.
@@ -110,7 +111,7 @@ notifications: [
 ]
 ````
 ***Note:*** `NOTIFICATION ON` and `NOTIFICATION OFF` stay for the different notifications you can send when you turn on or off the device. The same thing applies to `PAYLOAD ON` and `PAYLOAD OFF`. <br> <br>
-These are the configuration options for a notification device: <br> ***Note:*** They are all necessary. 
+These are the configuration options for a notification device: <br> ***Note:*** They are all necessary.
 
 | Option            | Description
 | ----------------- | -----------

@@ -19,6 +19,19 @@ module.exports = NodeHelper.create({
         this.setDevicesCounter = 0;  //  Counter for only one node_helper start look line 225 
     },
 	
+    formattedName: function(devname,actionString){
+        var result=actionString
+        if(devname != undefined){
+            var s = actionString.split(' ')
+            if(s.length>1)
+                s.splice(1,0,devname)
+            else
+                s.unshift(devname)
+            result = s.join(' ')
+        }        
+        return result;
+    },
+    
 	setDevices: function(){
         _this = this;
 
@@ -26,6 +39,7 @@ module.exports = NodeHelper.create({
         nD = this.notificationDevices(cD, this.config.notifications);
         pD = this.pageDevices(nD);
         mD = this.menuDevices(pD);
+        //console.log(pD);
         //console.log(mD);
 
         fauxMoPages = new FauxMo(mD);       // creates fauxmo devices
@@ -50,7 +64,7 @@ module.exports = NodeHelper.create({
 
         for(i = 0; i < Object.keys(notifications).length; i++){
             device = {}
-            device.name = notifications[i].name
+            device.name = _this.formattedName(_this.translations["deviceName"],notifications[i].name)
             if(notifications[i].port === undefined){
                 device.port = _this.config.startPort + 50 + i
             }else{
@@ -72,31 +86,30 @@ module.exports = NodeHelper.create({
         _this = this;
 
         counter = 0 + Object.keys(pageD.devices).length
-        this.pPort = _this.config.startPort
 
         if(_this.config.pages > 0){
             for(i = 0; i < _this.config.pages; i++){
                 device = {}
-                device.name = _this.translations["page"] + (i + 1)
-                device.port = this.pPort - 100
+                device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["page"] + (i + 1))
+                device.port = _this.config.startPort - 100
                 device.handler = new Function('action', `_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)`)
 
                 pageD.devices[i + counter] = device
-                this.pPort++
+                _this.config.startPort++
             }
         }
         return pageD
     },
 
-    menuDevices: function(menuD){       //  create your devices to control the Mirror and Pi
+    menuDevices: function(menuD){       //  create your devices to control the Mirror and pi
         _this = this;
         var opts = { timeout: 8000 };
-
+        console.log("menu device ")
         counter = 0 + Object.keys(menuD.devices).length
 
         if(this.config.refresh){
             device = {}
-            device.name = _this.translations["refresh"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["refresh"])
             device.port = _this.config.startPort
             device.handler = function(action) {_this.sendSocketNotification("ACTION", "refresh")}
 
@@ -107,7 +120,7 @@ module.exports = NodeHelper.create({
 
         if(this.config.restart){        // only with PM2
             device = {}
-            device.name = _this.translations["restart"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["restart"])
             device.port = _this.config.startPort
             device.handler = function(action) {
                 pm2.connect((err) => {
@@ -130,7 +143,7 @@ module.exports = NodeHelper.create({
         
         if(this.config.stop){        // only with PM2
             device = {}
-            device.name = _this.translations["stop"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["stop"])
             device.port = _this.config.startPort
             device.handler = function(action) {
                 pm2.connect((err) => {
@@ -153,7 +166,7 @@ module.exports = NodeHelper.create({
         
         if(this.config.reboot){        //reboot the pi
             device = {}
-            device.name = _this.translations["reboot"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["reboot"])
             device.port = _this.config.startPort
             device.handler = function(action) {
                 exec("sudo shutdown -r now", opts, (error, stdout, stderr) => {
@@ -167,7 +180,7 @@ module.exports = NodeHelper.create({
         
         if(this.config.shutdown){        // shutdwon the pi
             device = {}
-            device.name = _this.translations["shutdown"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["shutdown"])
             device.port = _this.config.startPort
             device.handler = function(action) {
                 exec("sudo shutdown -h now", opts, (error, stdout, stderr) => {
@@ -186,10 +199,11 @@ module.exports = NodeHelper.create({
          */
         
         if(this.config.monitorToggle){ 
+        	console.log("monitorToggle requested")
             device = {}
-            device.name = _this.translations["monitor"]
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["monitor"])
             device.port = _this.config.startPort
-            if(this.config.vcgencmd){
+            if(this.config.vcgencmd =='vgencmd'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("vcgencmd display_power 1", opts, (error, stdout, stderr) => {
@@ -201,7 +215,7 @@ module.exports = NodeHelper.create({
                         });
                     }
                 }
-            }else{
+            }else if(this.config.vcgencmd =='tvservice'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("tvservice --preferred", opts, (error, stdout, stderr) => {
@@ -214,6 +228,13 @@ module.exports = NodeHelper.create({
                     }
                 }
             }
+            else if(this.config.vcgencmd =='hide'){
+            	console.log("configuring toggle with hide")
+            	device.handler = function(action) {     
+            		console.log("received monitor toggle with hide action="+action)
+           	 		_this.sendSocketNotification('MONITOR_ACTION', action?"SLEEP_WAKE":"SLEEP_HIDE")
+          		}	
+            }
             menuD.devices[counter] = device;
             counter++;
         }
@@ -221,7 +242,7 @@ module.exports = NodeHelper.create({
         return menuD; 
     },
 
-    monitorOff: function(){
+  /*  monitorOff: function(){
         var opts = { timeout: 8000 };
         if(this.config.vcgencmd){
             exec("vcgencmd display_power 0", opts, (error, stdout, stderr) => {
@@ -232,7 +253,7 @@ module.exports = NodeHelper.create({
                 _this.checkForExecError(error, stdout, stderr);
             });
         }
-    },
+    }, */
 
     checkForExecError: function(error, stdout, stderr) {
         if (stderr) {

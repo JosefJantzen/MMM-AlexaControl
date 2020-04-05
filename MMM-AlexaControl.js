@@ -25,7 +25,7 @@ Module.register("MMM-AlexaControl",{
         shutdown: false,    //  shutdown your pi
         pm2ProcessName: "mm",  //  name of your pm2 process
         monitorToggle: true,   //  sitch your monitor on and off
-        vcgencmd: true      //  command you use for monitor toggle
+        vcgencmd: 'vcgencmd'      //  command you use for monitor toggle
     },
 
     getTranslations: function(){            // add more translations
@@ -39,7 +39,7 @@ Module.register("MMM-AlexaControl",{
         Log.log('Starting module: ' + this.name);
 
         // send all translations to node_helper
-        this.sendSocketNotification('TRANSLATIONS', {"monitor": this.translate("MONITOR"), "shutdown": this.translate("SHUTDOWN"), "reboot": this.translate("REBOOT"), "page": this.translate("PAGE"), "refresh": this.translate("REFRESH"), "restart": this.translate("RESTART"), "stop": this.translate("STOP")});
+        this.sendSocketNotification('TRANSLATIONS', {"monitor": this.translate("MONITOR"), "shutdown": this.translate("SHUTDOWN"), "reboot": this.translate("REBOOT"), "page": this.translate("PAGE"), "refresh": this.translate("REFRESH"), "restart": this.translate("RESTART"), "stop": this.translate("STOP"), "deviceName":this.translate(this.config.deviceName)});
         this.sendSocketNotification('SET_DEVICE', this.config);  // send the config to node_helper
     },
 
@@ -64,8 +64,13 @@ Module.register("MMM-AlexaControl",{
             if(payload === "refresh"){
                 window.location.reload(true);
             }
-        }if(notification === "CUSTOM"){
+        } 
+        if(notification === "CUSTOM"){
             this.sendNotification(payload[0], payload[1]);  //  send any notification to any module
+        }
+        if(notification =='MONITOR_ACTION'){
+            Log.log('RECEIVE monitor NOTIFICATION='+payload)
+            this.sendNotification(notification,payload)
         }
     }
  });
