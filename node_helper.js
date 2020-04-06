@@ -216,7 +216,8 @@ module.exports = NodeHelper.create({
                         });
                     }
                 }
-            }else if(this.config.vcgencmd =='tvservice'){
+            }
+            else if(this.config.vcgencmd =='tvservice'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("tvservice --preferred", opts, (error, stdout, stderr) => {
@@ -235,6 +236,11 @@ module.exports = NodeHelper.create({
             		console.log("received monitor toggle with hide action="+action)
            	 		_this.sendSocketNotification('MONITOR_ACTION', action?"SLEEP_WAKE":"SLEEP_HIDE")
           		}	
+            }
+            else{
+                device.handler = function(action){
+                    console.log("Please configure the option vcgencmd")
+                }
             }
             menuD.devices[counter] = device;
             counter++;
