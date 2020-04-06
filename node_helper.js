@@ -86,6 +86,7 @@ module.exports = NodeHelper.create({
         _this = this;
 
         counter = 0 + Object.keys(pageD.devices).length
+        this.pPort = _this.config.startPort
 
         if(_this.config.pages > 0){
             for(i = 0; i < _this.config.pages; i++){
@@ -95,7 +96,7 @@ module.exports = NodeHelper.create({
                 device.handler = new Function('action', `_this.sendSocketNotification("PAGE_CHANGED", ` + i +`)`)
 
                 pageD.devices[i + counter] = device
-                _this.config.startPort++
+                this.pPort++
             }
         }
         return pageD
@@ -104,7 +105,7 @@ module.exports = NodeHelper.create({
     menuDevices: function(menuD){       //  create your devices to control the Mirror and pi
         _this = this;
         var opts = { timeout: 8000 };
-        console.log("menu device ")
+        //console.log("menu device ")
         counter = 0 + Object.keys(menuD.devices).length
 
         if(this.config.refresh){
