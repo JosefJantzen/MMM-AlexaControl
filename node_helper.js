@@ -204,7 +204,7 @@ module.exports = NodeHelper.create({
             device = {}
             device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["monitor"])
             device.port = _this.config.startPort
-            if(this.config.vcgencmd =='vgencmd'){
+            if(this.config.vcgencmd =='vcgencmd'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("vcgencmd display_power 1", opts, (error, stdout, stderr) => {
