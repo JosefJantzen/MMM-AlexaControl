@@ -140,16 +140,19 @@ If you want to do different things when you turn on or off your device use this:
 
 ````js
 devices: {
-    {
-        name: 'Custom 2',    
-        port: 11103,            
-        handler: `if(action === 1){  // 1 means on
-                _this.sendSocketNotification("PAGE_CHANGED", 0)
-            }else{
-                _this.sendSocketNotification("PAGE_CHANGED", 1)      
-            }`
-    }  
-]}
+    devices: [{
+            {
+                name: 'Custom 2',
+                port: 11103,
+                handler: `if(action === 1){  // 1 means on
+                            _this.sendSocketNotification("PAGE_CHANGED", 0)
+                        }else{
+                            _this.sendSocketNotification("PAGE_CHANGED", 1)      
+                        }`
+            }
+        ]
+    }
+}
 ````
 
 These are the configuration options for a custom device:
