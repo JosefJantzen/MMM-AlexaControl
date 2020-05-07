@@ -3,6 +3,7 @@
 The `MMM-AlexaControl` module allows you to control your [MagicMirror²](https://github.com/MichMich/MagicMirror) with Alexa.
 You can turn it on and off, change the page and send notifications to other modules. For that it uses [`node-fauxmo`](https://github.com/lspiehler/node-fauxmo) nodejs module. As a result of this only an Amazon Alexa is necessary to use the module. Not even an Alexa Skill is required.
 It emulates an Wemos device. So acutally every smart home automation device that supports Wemos devices should be able to control your Mirror. But I only test it with an Echo Dot Gen. 3 and a Raspberry Pi 3B+. <br>
+There is a hole example configuration and examples for other modules in the [Wiki](https://github.com/JoChef2/MMM-AlexaControl/wiki). So you don't need the Readme absolutely. <br>
 ***Note:*** If you have problems [look at the end](https://github.com/JoChef2/MMM-AlexaControl#problems) of the Readme
 
 ## Installation
@@ -172,5 +173,11 @@ These are the configuration options for a custom device:
 
 2. Wrong action happen: <br>
     * You used the Port before. To solve the problem delete old devices and define a custom port for the device if it's a notification or custom device.
+    
+3. Need help for the configuration: <br>
+    * Here could help the wiki page [example configurations](https://github.com/JoChef2/MMM-AlexaControl/wiki/Example-configuration)
 
-3. If you have still problems create an issue.
+4. Don't know how to interact with other modules: <br>
+    * Here could help the wiki page with example configurations for [other modules](https://github.com/JoChef2/MMM-AlexaControl/wiki/Other-modules).
+
+5. If you have still problems create an issue.
