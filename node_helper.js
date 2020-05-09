@@ -246,6 +246,27 @@ module.exports = NodeHelper.create({
             counter++;
         }
         _this.config.startPort++
+
+        if(this.config.usb){        // toggle usb power of your pi
+            device = {}
+            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["usb"])
+            device.port = _this.config.startPort
+            device.handler = function(action) {
+                if(action === 0){
+                    exec("echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/unbind", opts, (error, stdout, stderr) => {
+                        _this.checkForExecError(error, stdout, stderr); 
+                    });
+                }
+                else{
+                    exec("echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/bind", opts, (error, stdout, stderr) => {
+                        _this.checkForExecError(error, stdout, stderr); 
+                    });
+                }
+            }           
+            menuD.devices[counter] = device;
+            counter++;
+        }
+        _this.config.startPort++
         return menuD; 
     },
 
