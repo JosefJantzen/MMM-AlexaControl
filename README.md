@@ -59,7 +59,7 @@ The following properties can be configured:
 | `height`          | Here you can change the image height. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `width`           | Here you can change the image width. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `pm2ProcessName`  | If you want to restart your Mirror with PM2 change here your PM2 processname. [Here](https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror) you can configure PM2 for your Mirror. <br> **Default value:** `mm`
-| `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `vcgencmd` <br> **Possible values:**<br> `vcgencmd` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`tvservice` = `tvservice --off` and `tvservice --preferred` <br> `hide` = uses the module [MMM-SleepWake](https://github.com/sdetweil/MMM-SleepWake) to hide all modules.
+| `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `vcgencmd` <br> **Possible values:**<br> `vcgencmd` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`tvservice` = `tvservice --off` and `tvservice --preferred` <br>`cec-client` = `echo 'standby 0' | cec-client -s -d 1` and `echo 'on 0' | cec-client -s -d 1` <br> `hide` = uses the module [MMM-SleepWake](https://github.com/sdetweil/MMM-SleepWake) to hide all modules.
 | `deviceName` | This option allows you to provide a name for this MM installation, useful if u have more than one Mirror installation. The alexa device names will include this name. <br> **Default value:** not used |
 | `startPort`       | First Port for the devices. The port identify the device. So delete old devices in the Alexa App to prevent issues. You have to change it if you have two mirrors with this module. If you have set the port to 11000 the ports 10900 - 11200 are reserved. So the easiest way is to set this option on your second mirror to 12000. <br> **Default value:** `11000`|
 
@@ -122,6 +122,44 @@ These are the configuration options for a notification device: <br> ***Note:*** 
 | `OnOff`           | If you want to send the same notification when you turn a device on and off chose `true`. Otherwise if you want to send different notifications chose `false`. <br> ***Possible values:*** `true` and `false`
 | `notification`    | **If OnOff is true:** <br> `notification: [["NOTIFICATION ON","PAYLOAD"],["NOTIFICATION OFF", "PAYLOAD"]]` <br> Replace the notifications and the payloads. <br> **If OnOff is false:** <br> `notification: ["NOTIFICATION", "PAYLOAD"]` <br> Replace the notification and payload.
 
+### Command device
+
+Command devices allows you to run commands. <br>
+You can run the same command when you turn the device on and off like this: 
+
+````js
+commands: [
+    {
+        name: 'Command 1',
+        port: 11102,
+        OnOff: false,
+        command: "<COMMAND>"
+    }
+]
+````
+
+You can run different commands when you turn a device on or off like this:
+
+````js
+commands: [
+    {
+        name: 'Command 2',
+        port: 11103,
+        OnOff: true,
+        command: ["COMMAND ON", "COMMAND OFF"]
+    }
+]
+````
+<br>
+These are the configuration options for a notification device. <br> ***Note:*** They are all necessary.
+
+| Option            | Description
+| ----------------- | -----------
+| `name`            | Here you can name your device. Make sure you didn't used the name before. Delete first the old device.
+| `port`            | Here you can give the device a static Port. I suggest that to you because then there aren't overlaps. Preferably start with the port `11100`.
+| `OnOff`           | If you want to run the same command when you turn a device on and off chose `true`. Otherwise if you want to run different commands chose `false`. <br> ***Possible values:*** `true` and `false`
+| `command`    | **If OnOff is true:** <br> `command: ["COMMAND ON", "COMMAND OFF"]` <br> Replace both commands. <br> **If OnOff is false:** <br> `command: "<COMMAND>"` <br> Replace the command.
+
 ### Custom devices
 
 You can also create custom devices. I'm not really sure if it's useful but probably somebody need it. For that you need the option `devices`. Here are two examples: <br>
@@ -132,7 +170,7 @@ If you want to do the same thing when you turn on and off your devices use this:
 devices: {
     devices: [{
         name: 'Custom 1',  
-        port: 11102,              
+        port: 11104,              
         handler: `_this.sendSocketNotification("PAGE_CHANGED", 1)`
     }  
 ]}
@@ -145,7 +183,7 @@ devices: {
     devices: [{
             {
                 name: 'Custom 2',
-                port: 11103,
+                port: 11105,
                 handler: `if(action === 1){  // 1 means on
                             _this.sendSocketNotification("PAGE_CHANGED", 0)
                         }else{

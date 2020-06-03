@@ -17,6 +17,7 @@ Module.register("MMM-AlexaControl",{
             devices: []
         },
         notifications: [],  //  empty array for your notification devices
+        commands: [],       // empty array for your command devices
         startPort: 11000,   //  the lowest used port
         refresh: true,      //  refresh your Mirror
         restart: true,      //  restart your Mirror with pm2
@@ -24,7 +25,7 @@ Module.register("MMM-AlexaControl",{
         reboot: false,      //  reboot your pi
         shutdown: false,    //  shutdown your pi
         pm2ProcessName: "mm",  //  name of your pm2 process
-        monitorToggle: true,   //  sitch your monitor on and off
+        monitorToggle: true,   //  switch your monitor on and off
         vcgencmd: 'vcgencmd',  //  command you use for monitor toggle
         usb: false          // toggle usb power of your pi
     },

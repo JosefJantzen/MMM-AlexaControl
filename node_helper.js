@@ -37,7 +37,8 @@ module.exports = NodeHelper.create({
 
         cD = this.customDevices(this.config.devices);
         nD = this.notificationDevices(cD, this.config.notifications);
-        pD = this.pageDevices(nD);
+        coD = this.commandDevices(nD, this.config.commands)
+        pD = this.pageDevices(coD);
         mD = this.menuDevices(pD);
         //console.log(pD);
         //console.log(mD);
@@ -81,6 +82,34 @@ module.exports = NodeHelper.create({
         }
         return notificationD;
     }, 
+
+    commandDevices: function(commandD, commands){
+        _this = this
+
+        counter = 0 + Object.keys(commandD.devices).length        
+        _this.n = []
+        _this.opts = { timeout: 8000 };
+        _this.exec = exec
+
+        for(i = 0; i < Object.keys(commands).length; i++){
+            device = {}
+            device.name = _this.formattedName(_this.translations["deviceName"],commands[i].name)
+            if(commands[i].port === undefined){
+                device.port = _this.config.startPort + 75 + i
+            }else{
+                device.port = commands[i].port
+            }
+            _this.n[i] = commands[i].command
+            if(commands[i].OnOff){
+                device.handler = new Function('action', 'if(action === 1){_this.exec(' + JSON.stringify(_this.n[i][0]) + '), _this.opts, (error, stdout, stderr) => {_this.checkForExecError(error, stdout, stderr); }}else{_this.exec(' + JSON.stringify(_this.n[i][1]) + '), _this.opts, (error, stdout, stderr) => {_this.checkForExecError(error, stdout, stderr); }}')
+            }
+            else{
+                device.handler = new Function('action', 'if(action === 1){_this.exec(' + JSON.stringify(_this.n[i]) + '), _this.opts, (error, stdout, stderr) => {_this.checkForExecError(error, stdout, stderr); }}')
+            }
+            commandD.devices[i + counter] = device
+        }
+        return commandD;
+    },
 
     pageDevices: function(pageD){      //  creates your page devices
         _this = this;
@@ -225,6 +254,19 @@ module.exports = NodeHelper.create({
                         });
                     }if(action === 0){
                         exec("tvservice --off", opts, (error, stdout, stderr) => {
+                            _this.checkForExecError(error, stdout, stderr);
+                        });
+                    }
+                }
+            }
+            else if(this.config.vcgencmd =='cec-client'){
+                device.handler = function(action) {     
+                    if(action === 1){
+                        exec("echo 'on 0' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
+                            _this.checkForExecError(error, stdout, stderr);
+                        });
+                    }if(action === 0){
+                        exec("echo 'standby 0' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
                             _this.checkForExecError(error, stdout, stderr);
                         });
                     }
