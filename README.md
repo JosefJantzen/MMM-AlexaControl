@@ -74,7 +74,7 @@ These are configured devices you can use. If you want to change their name you m
 | `reboot`          | This reboots your Pi. <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
 | `shutdown`        | This shutdowns your Pi. ***Note:*** When you shutdown the Pi your devices aren't available. So you must start your Pi manually. <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
 | `monitorToggle`   | This can switch your monitor on and off. Make sure the used command work for you. Look at the option `vcgencmd` <br> ***Default value:*** `true` <br> ***Possible values:*** `true` and `false`
-|`usb`              | This device can toggle the usb power of your pi. <br>  ***Note:*** It uses the following commands: <br> `echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/unbind` <br> `echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/bind`  <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
+|`usb`              | This device can toggle the usb power of your pi. <br>  ***Note:*** It uses the following commands: <br> ```echo '1-1' sudo tee /sys/bus/usb/drivers/usb/unbind``` <br> ```echo '1-1' sudo tee /sys/bus/usb/drivers/usb/bind```  <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
 
 ### Page devices
 
