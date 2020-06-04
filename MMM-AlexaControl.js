@@ -27,6 +27,7 @@ Module.register("MMM-AlexaControl",{
         pm2ProcessName: "mm",  //  name of your pm2 process
         monitorToggle: true,   //  switch your monitor on and off
         vcgencmd: 'vcgencmd',  //  command you use for monitor toggle
+        cecAddress: "0.0.0.0", //  Address for the cec-client
         usb: false          // toggle usb power of your pi
     },
 

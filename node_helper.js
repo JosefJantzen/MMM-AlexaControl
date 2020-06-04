@@ -262,11 +262,11 @@ module.exports = NodeHelper.create({
             else if(this.config.vcgencmd =='cec'){
                 device.handler = function(action) {     
                     if(action === 1){
-                        exec("echo \'on 0.0.0.0\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
+                        exec("echo \'on "+ _this.config.cecAddress +"\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
                             _this.checkForExecError(error, stdout, stderr);
                         });
                     }if(action === 0){
-                        exec("echo \'standby 0.0.0.0\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
+                        exec("echo \'standby "+ _this.config.cecAddress +"\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
                             _this.checkForExecError(error, stdout, stderr);
                         });
                     }
