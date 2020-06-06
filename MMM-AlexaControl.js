@@ -9,26 +9,30 @@
 Module.register("MMM-AlexaControl",{
      
     defaults:{
-        image: true,    //  shows the image
-        height: 265,    // heigth of the image
-        width: 265,     // width of the image
-        pages: 0,       //  number off pages in MMM-Pages module. 0 means you doesn't use it
-        devices: {      //  empty object for your custom devices
+        image: true,            //  shows the image
+        height: 265,            // heigth of the image
+        width: 265,             // width of the image
+        deviceName: null,       // optional device name
+        startPort: 11000,       //  the lowest used port
+        refresh: true,          //  refresh your Mirror
+        pm2: false,             // restarts and stops the mirror with PM2
+        reboot: false,          //  reboot your pi
+        shutdown: false,        //  shutdown your pi
+        monitor: false,         //  switch your monitor on and off
+        usb: false,             // toggle usb power of your pi
+        pages: 0,               //  number off pages in MMM-Pages module. 0 means you doesn't use it
+        notifications: [],      //  empty array for your notification devices
+        commands: [],           // empty array for your command devices
+        devices: {              //  empty object for your custom devices
             devices: []
         },
-        notifications: [],  //  empty array for your notification devices
-        commands: [],       // empty array for your command devices
-        startPort: 11000,   //  the lowest used port
-        refresh: true,      //  refresh your Mirror
+        //** Old options */
         restart: true,      //  restart your Mirror with pm2
         stop: true,         //  stops your Mirror with pm2
-        reboot: false,      //  reboot your pi
-        shutdown: false,    //  shutdown your pi
         pm2ProcessName: "mm",  //  name of your pm2 process
         monitorToggle: true,   //  switch your monitor on and off
-        vcgencmd: 'vcgencmd',  //  command you use for monitor toggle
+        vcgencmd: false,  //  command you use for monitor toggle
         cecAddress: "0.0.0.0", //  Address for the cec-client
-        usb: false          // toggle usb power of your pi
     },
 
     getTranslations: function(){            // add more translations

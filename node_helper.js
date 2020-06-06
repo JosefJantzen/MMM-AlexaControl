@@ -16,7 +16,7 @@ module.exports = NodeHelper.create({
 	start: function () {
         console.log('MMM-AlexaControl helper, started...');
         this.config = null;
-        this.setDevicesCounter = 0;  //  Counter for only one node_helper start look line 225 
+        this.setDevicesCounter = 0;  //  Counter for only one node_helper start look line 366
     },
 	
     formattedName: function(devname,actionString){
@@ -40,8 +40,6 @@ module.exports = NodeHelper.create({
         coD = this.commandDevices(nD, this.config.commands)
         pD = this.pageDevices(coD);
         mD = this.menuDevices(pD);
-        //console.log(pD);
-        //console.log(mD);
 
         fauxMoPages = new FauxMo(mD);       // creates fauxmo devices
     },
@@ -134,7 +132,6 @@ module.exports = NodeHelper.create({
     menuDevices: function(menuD){       //  create your devices to control the Mirror and pi
         _this = this;
         var opts = { timeout: 8000 };
-        //console.log("menu device ")
         counter = 0 + Object.keys(menuD.devices).length
 
         if(this.config.refresh){
@@ -148,7 +145,7 @@ module.exports = NodeHelper.create({
         }
         _this.config.startPort++
 
-        if(this.config.restart){        // only with PM2
+        if(this.config.pm2 != false){          // only with PM2
             device = {}
             device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["restart"])
             device.port = _this.config.startPort
@@ -159,39 +156,78 @@ module.exports = NodeHelper.create({
                     }
         
                     console.log("Restarting PM2 process: " + _this.config.pm2ProcessName);
-                    pm2.restart(_this.config.pm2ProcessName, function(err, apps) {
+                    pm2.restart(_this.config.pm2, function(err, apps) {
                         pm2.disconnect();
                         if (err) { console.log(err); }
                     });
                 });
             }
-            
             menuD.devices[counter] = device;
             counter++;
+
+            device = {}
+                device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["stop"])
+                device.port = _this.config.startPort
+                device.handler = function(action) {
+                    pm2.connect((err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+            
+                        console.log("Stopping PM2 process: " + _this.config.pm2ProcessName);
+                        pm2.stop(_this.config.pm2ProcessName, function(err, apps) {
+                            pm2.disconnect();
+                            if (err) { console.log(err); }
+                        });
+                    });
+                }
+
+                menuD.devices[counter] = device;
+                counter++;
+        }
+        else if(this.config.restart || this.config.stop){
+            if(this.config.restart){        // only with PM2
+                device = {}
+                device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["restart"])
+                device.port = _this.config.startPort
+                device.handler = function(action) {
+                    pm2.connect((err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+            
+                        console.log("Restarting PM2 process: " + _this.config.pm2ProcessName);
+                        pm2.restart(_this.config.pm2ProcessName, function(err, apps) {
+                            pm2.disconnect();
+                            if (err) { console.log(err); }
+                        });
+                    });
+                }
+                menuD.devices[counter] = device;
+                counter++;
+            }            
+            if(this.config.stop){        // only with PM2
+                device = {}
+                device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["stop"])
+                device.port = _this.config.startPort
+                device.handler = function(action) {
+                    pm2.connect((err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+            
+                        console.log("Stopping PM2 process: " + _this.config.pm2ProcessName);
+                        pm2.stop(_this.config.pm2ProcessName, function(err, apps) {
+                            pm2.disconnect();
+                            if (err) { console.log(err); }
+                        });
+                    });
+                }
+                menuD.devices[counter] = device;
+                counter++;
+            }
         }
         _this.config.startPort++
-        
-        if(this.config.stop){        // only with PM2
-            device = {}
-            device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["stop"])
-            device.port = _this.config.startPort
-            device.handler = function(action) {
-                pm2.connect((err) => {
-                    if (err) {
-                        console.error(err);
-                    }
-        
-                    console.log("Stopping PM2 process: " + _this.config.pm2ProcessName);
-                    pm2.stop(_this.config.pm2ProcessName, function(err, apps) {
-                        pm2.disconnect();
-                        if (err) { console.log(err); }
-                    });
-                });
-            }
-
-            menuD.devices[counter] = device;
-            counter++;
-        }
         _this.config.startPort++
         
         if(this.config.reboot){        //reboot the pi
@@ -221,19 +257,13 @@ module.exports = NodeHelper.create({
             counter++;
         }
         _this.config.startPort++
-
-        /**
-         * for me worked only vcgencmd display_power 0 and vcgencmd display_power 1
-         * probably for you work tvservice --off and tvservice --preferred
-         * test it in terminal if you aren't sure
-         */
         
-        if(this.config.monitorToggle){ 
+        if(this.config.monitorToggle || this.config.monitor != false){ 
         	console.log("monitorToggle requested")
             device = {}
             device.name = _this.formattedName(_this.translations["deviceName"],_this.translations["monitor"])
             device.port = _this.config.startPort
-            if(this.config.vcgencmd =='vcgencmd'){
+            if(this.config.vcgencmd =='vcgencmd' || this.config.monitor == 'vcgencmd'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("vcgencmd display_power 1", opts, (error, stdout, stderr) => {
@@ -246,7 +276,7 @@ module.exports = NodeHelper.create({
                     }
                 }
             }
-            else if(this.config.vcgencmd =='tvservice'){
+            else if(this.config.vcgencmd =='tvservice' || this.config.monitor == 'tvservice'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("tvservice --preferred", opts, (error, stdout, stderr) => {
@@ -259,7 +289,10 @@ module.exports = NodeHelper.create({
                     }
                 }
             }
-            else if(this.config.vcgencmd =='cec'){
+            else if(this.config.vcgencmd =='cec' || this.config.monitor[0] == 'cec'){
+                if(this.config.monitor[0] == 'cec'){
+                    _this.config.cecAddress = this.config.monitor[1]
+                }
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("echo \'on "+ _this.config.cecAddress +"\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
@@ -272,7 +305,7 @@ module.exports = NodeHelper.create({
                     }
                 }
             }
-            else if(this.config.vcgencmd =='hide'){
+            else if(this.config.vcgencmd =='hide' || this.config.monitor == 'hide'){
             	console.log("configuring toggle with hide")
             	device.handler = function(action) {     
             		console.log("received monitor toggle with hide action="+action)
@@ -281,7 +314,7 @@ module.exports = NodeHelper.create({
             }
             else{
                 device.handler = function(action){
-                    console.log("Please configure the option vcgencmd")
+                    console.log("ERROR: monitor is wrong configured. Please check your config.")
                 }
             }
             menuD.devices[counter] = device;
@@ -311,19 +344,6 @@ module.exports = NodeHelper.create({
         _this.config.startPort++
         return menuD; 
     },
-
-  /*  monitorOff: function(){
-        var opts = { timeout: 8000 };
-        if(this.config.vcgencmd){
-            exec("vcgencmd display_power 0", opts, (error, stdout, stderr) => {
-                _this.checkForExecError(error, stdout, stderr); 
-            });
-        }else{
-            exec("tvservice --off", opts, (error, stdout, stderr) => {
-                _this.checkForExecError(error, stdout, stderr);
-            });
-        }
-    }, */
 
     checkForExecError: function(error, stdout, stderr) {
         if (stderr) {

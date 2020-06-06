@@ -42,8 +42,6 @@ modules:[
         position: 'middle_center',
         config:{
             image: true,
-            pm2ProcessName: "mm",
-            vcgencmd: "vcgencmd"
         }
     }
 ]
@@ -58,23 +56,19 @@ The following properties can be configured:
 | `image`           | ![Icon](https://i.imgur.com/wk0YF1V.png?1) <br>  Make this image visible. <br> **Default Value:** `true` <br>**Possilbe Values:** `true` or `false`
 | `height`          | Here you can change the image height. <br> **Default Value:** `265` ***Note:*** The unit is px.
 | `width`           | Here you can change the image width. <br> **Default Value:** `265` ***Note:*** The unit is px.
-| `pm2ProcessName`  | If you want to restart your Mirror with PM2 change here your PM2 processname. [Here](https://github.com/MichMich/MagicMirror/wiki/Auto-Starting-MagicMirror) you can configure PM2 for your Mirror. <br> **Default value:** `mm`
-| `vcgencmd`        | This option chose the command to toggle your monitor on and off. I found two commands. Test them before in the terminal. <br> **Default value:** `vcgencmd` <br> **Possible values:**<br> `vcgencmd` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`tvservice` = `tvservice --off` and `tvservice --preferred` <br>`cec-client` = `echo \'standby  <cecAddress> \' cec-client -s -d 1` and `echo \'on  <cecAddress> \' cec-client -s -d 1` = uses the module [MMM-SleepWake](https://github.com/sdetweil/MMM-SleepWake) to hide all modules.
-|`cecAddress`       |This option is only necessary if use cec-client.<br> **Default value:** `0.0.0.0`|
 | `deviceName`      | This option allows you to provide a name for this MM installation, useful if u have more than one Mirror installation. The alexa device names will include this name. <br> **Default value:** not used |
 | `startPort`       | First Port for the devices. The port identify the device. So delete old devices in the Alexa App to prevent issues. You have to change it if you have two mirrors with this module. If you have set the port to 11000 the ports 10900 - 11200 are reserved. So the easiest way is to set this option on your second mirror to 12000. <br> **Default value:** `11000`|
 
 ### Control devices
-These are configured devices you can use. If you want to change their name you must edit the translation file inside `/translations/en.json`. You can also add languages.
+These are configured devices you can use. You can edit the default names in the Alexa App.
 
 | Option            | Description
 | ----------------- | -----------
 | `refresh`         | This refreshs your Mirror. <br> ***Default value:*** `true` <br> ***Possible value:*** `true` and `false`
-| `restart`         | This restarts your Mirror with PM2. So make sure the `pm2ProcessName` is right. <br> ***Default value:*** `true` <br> ***Possible values:*** `true` and `false`
-| `stop`            | This stops your Mirror with PM2. So make sure the `pm2ProcessName` is right. <br> ***Default value:*** `true` <br> ***Possible values:*** `true` and `false`
+| `pm2`             | This stops and restarts your Mirror with PM2. You have to configure the PM2 process name of your Mirror e.g `mm`. <br> ***Default value:*** `false`
 | `reboot`          | This reboots your Pi. <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
 | `shutdown`        | This shutdowns your Pi. ***Note:*** When you shutdown the Pi your devices aren't available. So you must start your Pi manually. <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
-| `monitorToggle`   | This can switch your monitor on and off. Make sure the used command work for you. Look at the option `vcgencmd` <br> ***Default value:*** `true` <br> ***Possible values:*** `true` and `false`
+| `monitor`         | This can switch your monitor on and off. Here you have to configure the command the module uses. <br> ***Default value:*** `false` <br> ***Possible values:*** <br> `vcgencmd` = `vcgencmd display_power 0` and `vcgencmd display_power 1` <br>`tvservice` = `tvservice --off` and `tvservice --preferred` <br>`["cec-client","<cecAddress>"]` = `echo \'standby  <cecAddress> \' cec-client -s -d 1` and `echo \'on  <cecAddress> \' cec-client -s -d 1` <br> `hide` = uses the module [MMM-SleepWake](https://github.com/sdetweil/MMM-SleepWake) to hide all modules.|
 |`usb`              | This device can toggle the usb power of your pi. <br>  ***Note:*** It uses the following commands: <br> ```echo '1-1' sudo tee /sys/bus/usb/drivers/usb/unbind``` <br> ```echo '1-1' sudo tee /sys/bus/usb/drivers/usb/bind```  <br> ***Default value:*** `false` <br> ***Possible values:*** `true` and `false`
 
 ### Page devices
@@ -120,7 +114,7 @@ These are the configuration options for a notification device: <br> ***Note:*** 
 | ----------------- | -----------
 | `name`            | Here you can name your device. Make sure you didn't used the name before. Delete first the old device.
 | `port`            | Here you can give the device a static Port. I suggest that to you because then there aren't overlaps. Preferably start with the port `11100`.
-| `OnOff`           | If you want to send the same notification when you turn a device on and off chose `true`. Otherwise if you want to send different notifications chose `false`. <br> ***Possible values:*** `true` and `false`
+| `OnOff`           | If you want to send the same notification when you turn a device on and off chose `false`. Otherwise if you want to send different notifications chose `true`. <br> ***Possible values:*** `true` and `false`
 | `notification`    | **If OnOff is true:** <br> `notification: [["NOTIFICATION ON","PAYLOAD"],["NOTIFICATION OFF", "PAYLOAD"]]` <br> Replace the notifications and the payloads. <br> **If OnOff is false:** <br> `notification: ["NOTIFICATION", "PAYLOAD"]` <br> Replace the notification and payload.
 
 ### Command device
@@ -151,21 +145,20 @@ commands: [
     }
 ]
 ````
-<br>
-These are the configuration options for a notification device. <br> ***Note:*** They are all necessary.
+<br>These are the configuration options for a notification device. <br> ***Note:*** They are all necessary.
 
 | Option            | Description
 | ----------------- | -----------
 | `name`            | Here you can name your device. Make sure you didn't used the name before. Delete first the old device.
 | `port`            | Here you can give the device a static Port. I suggest that to you because then there aren't overlaps. Preferably start with the port `11100`.
-| `OnOff`           | If you want to run the same command when you turn a device on and off chose `true`. Otherwise if you want to run different commands chose `false`. <br> ***Possible values:*** `true` and `false`
+| `OnOff`           | If you want to run the same command when you turn a device on and off chose `false`. Otherwise if you want to run different commands chose `true`. <br> ***Possible values:*** `true` and `false`
 | `command`    | **If OnOff is true:** <br> `command: ["COMMAND ON", "COMMAND OFF"]` <br> Replace both commands. <br> **If OnOff is false:** <br> `command: "<COMMAND>"` <br> Replace the command.
 
 ### Custom devices
 
-You can also create custom devices. I'm not really sure if it's useful but probably somebody need it. For that you need the option `devices`. Here are two examples: <br>
+You can also create custom devices. I'm not really sure if it's useful but probably somebody needs it. For that you need the option `devices`. Here are two examples: <br>
 If you want to do the same thing when you turn on and off your devices use this:
-<br>***Note:*** You have to put the devices array you chose inside the config part.
+<br> ***Note:*** You have to put the devices array you chose inside the config part.
 
 ````js
 devices: {
@@ -212,7 +205,7 @@ These are the configuration options for a custom device:
     * Have you used the port before? Try every devices from the mirror. Probably the name is wrong. If that happen delete the device and discover for new devices. Define yourself ports for notification and custom devices to prevent this problem.
 
 2. Wrong action happen: <br>
-    * You used the Port before. To solve the problem delete old devices and define a custom port for the device if it's a notification or custom device.
+    * You used the Port before. To solve the problem delete old devices and define a custom port for the device if it's a notification, command or custom device.
     
 3. Need help for the configuration: <br>
     * Here could help the wiki page [example configurations](https://github.com/JoChef2/MMM-AlexaControl/wiki/Example-configuration)
