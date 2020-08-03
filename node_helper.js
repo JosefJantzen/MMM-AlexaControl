@@ -259,7 +259,7 @@ module.exports = NodeHelper.create({
                     }
                 }
             }
-            else if(this.config.vcgencmd =='cec'){
+            else if(this.config.vcgencmd =='cec-client'){
                 device.handler = function(action) {     
                     if(action === 1){
                         exec("echo \'on "+ _this.config.cecAddress +"\' | cec-client -s -d 1", opts, (error, stdout, stderr) => {
