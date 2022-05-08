@@ -1,27 +1,27 @@
 {
-    "name": "MMM-ALexaControl",
-    "version": "1.0.0",
-    "description": "Control MagicMirror by MichMich with Alexa",
-    "main": "MMM-AlexaControl.js",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/JoChef2/MMM-AlexaControl.git"
-    },
-    "keywords": [
-      "MagicMirror",
-      "AlexaControl",
-      "wemos",
-      "fauxmo"
-    ],
-    "author": "JoChef2",
-    "license": "MIT",
-    "bugs": {
-      "url": "https://github.com/JoChef2/MMM-AlexaControl/issues"
-    },
-    "homepage": "https://github.com/JoChef2/MMM-AlexaControl#readme",
-    "dependencies": {
-      "node-fauxmo": "0.0.7",
+  "name": "MMM-ALexaControl",
+  "version": "1.0.0",
+  "description": "Control MagicMirror by MichMich with Alexa",
+  "main": "MMM-AlexaControl.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoChef2/MMM-AlexaControl.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "AlexaControl",
+    "wemos",
+    "fauxmo"
+  ],
+  "author": "JoChef2",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JoChef2/MMM-AlexaControl/issues"
+  },
+  "homepage": "https://github.com/JoChef2/MMM-AlexaControl#readme",
+  "dependencies": {
+    "node-fauxmo": "0.0.8",
       "child_process": "^1.0.2",
-      "pm2": "^2.6.1"
-    }
+      "pm2": "5.2.0"
   }
+}
