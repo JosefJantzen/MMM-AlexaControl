@@ -6,6 +6,9 @@ It emulates an Wemos device. So acutally every smart home automation device that
 There is a hole example configuration and examples for other modules in the [Wiki](https://github.com/JoChef2/MMM-AlexaControl/wiki). So you don't need the Readme absolutely. <br>
 ***Note:*** If you have problems [look at the end](https://github.com/JoChef2/MMM-AlexaControl#problems) of the Readme
 
+## Disclaimer
+The module has some issues with the dicovering of devices. The reason for that is the npm package I used for that. I don't really know how to fix it and the developer of the package isn't active since a long time now. So if you have that problem I can't really help you. Sometimes [these steps](https://github.com/JoChef2/MMM-AlexaControl#problems) help, but not always. If you are new, give it a try with the default config shown below. Because of these issues I'm not actively developing the module.
+
 ## Installation
 
 1. Navigate to your modules folder in a terminal:
